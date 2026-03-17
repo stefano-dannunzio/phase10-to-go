@@ -1,0 +1,21 @@
+{
+  "name": "Phase 10 Scoreboard",
+  "short_name": "Phase10",
+  "description": "A simple and modern app to track scores and phases for the Phase 10 card game.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#102217",
+  "theme_color": "#102217",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
