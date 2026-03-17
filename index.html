@@ -25,8 +25,14 @@
         <div class="icon-btn theme-toggle">
           <span class="material-symbols-outlined">light_mode</span>
         </div>
-        <div class="icon-btn" aria-label="Settings">
-          <span class="material-symbols-outlined">settings</span>
+        <div class="header-center"></div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button id="btn-install" class="btn btn-primary hidden" style="padding: 0.4rem 0.8rem; border-radius: 12px; font-size: 0.85rem;" title="Install App">
+            <span class="material-symbols-outlined" style="font-size: 18px; margin-right: 4px;">download</span> Install
+          </button>
+          <div class="icon-btn" aria-label="Settings">
+            <span class="material-symbols-outlined">settings</span>
+          </div>
         </div>
       </header>
       
@@ -190,6 +196,16 @@
         </button>
       </footer>
     </section>
+
+    <!-- iOS Install Prompt -->
+    <div id="ios-install-prompt" class="modal-overlay hidden">
+      <div class="modal" style="transform: translateY(0);text-align:center;max-height:unset;border-bottom-left-radius: 24px;border-bottom-right-radius: 24px;margin: 2rem;border-radius: 24px;">
+        <h3 class="screen-title mb-4">Install App</h3>
+        <p class="instruction-text mb-4" style="color:var(--text-main);">Install this application on your home screen for quick and easy access when you're offline.</p>
+        <p class="instruction-text mb-8">Tap the <strong>Share</strong> button <span class="material-symbols-outlined" style="font-size:20px; vertical-align:middle; color:var(--text-main);">ios_share</span> below, then select <br><strong>"Add to Home Screen"</strong> <span class="material-symbols-outlined" style="font-size:20px; vertical-align:middle; color:var(--text-main);">add_box</span>.</p>
+        <button id="btn-close-ios-prompt" class="btn btn-secondary w-full" style="padding: 1rem; border-radius: 16px;">Got it!</button>
+      </div>
+    </div>
 
   </div>
   

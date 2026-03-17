@@ -354,6 +354,76 @@ document.addEventListener('DOMContentLoaded', () => {
     switchScreen(sWelcome);
   });
 
+  // --- PWA INSTALLATION LOGIC ---
+  const btnInstall = document.getElementById('btn-install');
+  const iosInstallPrompt = document.getElementById('ios-install-prompt');
+  const btnCloseIosPrompt = document.getElementById('btn-close-ios-prompt');
+  let deferredPrompt;
+
+  // Wait for the browser to fire the beforeinstallprompt event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent default mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
+    // Notify user by showing our custom install button
+    if (btnInstall) {
+      btnInstall.classList.remove('hidden');
+    }
+  });
+
+  // Handle the click on our custom install button
+  if (btnInstall) {
+    btnInstall.addEventListener('click', async () => {
+      // Hide the button
+      btnInstall.classList.add('hidden');
+      if (deferredPrompt) {
+        // Show the prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to the install prompt: ${outcome}`);
+        // Nullify the prompt since it can only be used once
+        deferredPrompt = null;
+      }
+    });
+  }
+
+  // Hide button if the app is successfully installed
+  window.addEventListener('appinstalled', () => {
+    if (btnInstall) btnInstall.classList.add('hidden');
+    deferredPrompt = null;
+    console.log('PWA was successfully installed');
+  });
+
+  // --- iOS INSTALLATION PROMPT ---
+  const isIos = () => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(userAgent);
+  };
+  
+  // Detects if device is in standalone mode
+  const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+  if (isIos() && !isInStandaloneMode() && iosInstallPrompt) {
+    // Show iOS prompt, but avoid spamming the user on every visit
+    const hasShownIosPrompt = localStorage.getItem('pwa_ios_prompt_shown');
+    if (!hasShownIosPrompt) {
+      setTimeout(() => {
+        iosInstallPrompt.classList.remove('hidden');
+        iosInstallPrompt.classList.add('active'); // active triggers opacity / transform animation
+        localStorage.setItem('pwa_ios_prompt_shown', 'true');
+      }, 2500); // Wait couple of seconds before showing
+    }
+  }
+
+  if (btnCloseIosPrompt) {
+    btnCloseIosPrompt.addEventListener('click', () => {
+      iosInstallPrompt.classList.remove('active');
+      setTimeout(() => iosInstallPrompt.classList.add('hidden'), 300);
+    });
+  }
+
   // Initialize Application
   initApp();
 });
